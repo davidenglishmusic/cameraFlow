@@ -17,16 +17,31 @@ class CameraFlow
     @startingXPoint = @imageWidth * (@amountInPixelsToEnlargeBy / @HDresolution[0])
     @startingYPoint = @imageHeight * (@amountInPixelsToEnlargeBy / @HDresolution[0])
     @HDresolution = [1920, 1080]
+    @numberOfKeyFrames = 20
+    @totalFramesOfClip = 300
+    @startingCoordinates = [0,0]
+    @endingCoordinates = [0,0]
+    @limit = @startingYPoint
+    @filename = "green"
+    @extension = ".jpg"
   end
 
-  def scaleCrop
+  def scaleCrop(coordinates, filename)
     zoomedImage = @currentImage.scale(@enlargementFactor)
-    croppedImage = zoomedImage.crop(@startingXPoint, @startingYPoint, @HDresolution[0], @HDresolution[1])
-    croppedImage.write "green001.jpg"
+    croppedImage = zoomedImage.crop(@startingXPoint + coordinates[0], @startingYPoint + coordinates[1], @HDresolution[0], @HDresolution[1])
+    croppedImage.write "#{filename}"
+  end
+
+  def getKeyFramesAndCoordinates()
+    circleCoordinates = CircleCoordinatesGen.new(@numberOfKeyFrames, @limit).generateCoordinates()
+    keyFrames = KeyframeGen.new(@numberOfKeyFrames, @totalFramesOfClip).generateKeyframes()
+    keyFramesandCoordinates = keyFrames.zip(circleCoordinates)
+    keyFramesandCoordinates.insert(0, [0, @startingCoordinates])
+    keyFramesandCoordinates.push([@totalFramesOfClip, [@endingCoordinates]])
   end
 
 end
 
 shake = CameraFlow.new()
 
-shake.scaleCrop()
+p shake.getKeyFramesAndCoordinates()
