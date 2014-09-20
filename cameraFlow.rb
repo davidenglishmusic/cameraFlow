@@ -37,11 +37,25 @@ class CameraFlow
     keyFrames = KeyframeGen.new(@numberOfKeyFrames, @totalFramesOfClip).generateKeyframes()
     keyFramesandCoordinates = keyFrames.zip(circleCoordinates)
     keyFramesandCoordinates.insert(0, [0, @startingCoordinates])
-    keyFramesandCoordinates.push([@totalFramesOfClip, [@endingCoordinates]])
+    keyFramesandCoordinates.push([@totalFramesOfClip, @endingCoordinates])
+  end
+
+  def getAllFramesAndCoordinates(keyFramesAndCoordinates)
+    arr = []
+    finalArr = []
+    keyFramesAndCoordinates.each_cons(2) do | frameAndCoordinateA, frameAndCoordinateB |
+      #p frameAndCoordinateA[1]
+      #p frameAndCoordinateB[1]
+      framesForThisKeyFramePair = PositionByFrameGen.new(frameAndCoordinateA[1], frameAndCoordinateB[1], frameAndCoordinateA[0], frameAndCoordinateB[0]).getAllFrameCoordinates()
+      framesForThisKeyFramePair.pop
+      arr.push(framesForThisKeyFramePair)
+    end
+    arr.compact.flatten.each_slice(3).to_a
+    arr
   end
 
 end
 
 shake = CameraFlow.new()
 
-p shake.getKeyFramesAndCoordinates()
+p shake.getAllFramesAndCoordinates(shake.getKeyFramesAndCoordinates())
