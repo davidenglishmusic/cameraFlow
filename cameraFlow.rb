@@ -15,10 +15,9 @@ class CameraFlow
     @imageWidth = @currentImage.columns
     @imageHeight = @currentImage.rows
     @startingXPoint = @imageWidth * (@amountInPixelsToEnlargeBy / @HDresolution[0])
-    @startingYPoint = @imageHeight * (@amountInPixelsToEnlargeBy / @HDresolution[0])
-    @HDresolution = [1920, 1080]
-    @numberOfKeyFrames = 20
-    @totalFramesOfClip = 300
+    @startingYPoint = @imageHeight * (@amountInPixelsToEnlargeBy / @HDresolution[1])
+    @numberOfKeyFrames = 2
+    @totalFramesOfClip = 30
     @startingCoordinates = [0,0]
     @endingCoordinates = [0,0]
     @limit = @startingYPoint
@@ -44,18 +43,12 @@ class CameraFlow
     arr = []
     finalArr = []
     keyFramesAndCoordinates.each_cons(2) do | frameAndCoordinateA, frameAndCoordinateB |
-      #p frameAndCoordinateA[1]
-      #p frameAndCoordinateB[1]
       framesForThisKeyFramePair = PositionByFrameGen.new(frameAndCoordinateA[1], frameAndCoordinateB[1], frameAndCoordinateA[0], frameAndCoordinateB[0]).getAllFrameCoordinates()
       framesForThisKeyFramePair.pop
-      arr.push(framesForThisKeyFramePair)
+      arr.concat(framesForThisKeyFramePair)
     end
     arr.compact.flatten.each_slice(3).to_a
     arr
   end
 
 end
-
-shake = CameraFlow.new()
-
-p shake.getAllFramesAndCoordinates(shake.getKeyFramesAndCoordinates())

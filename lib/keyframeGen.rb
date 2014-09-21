@@ -26,7 +26,7 @@ class KeyframeGen
   end
 
   def isUnique(newFrame, arr)
-    return true if arr.index(newFrame) == nil
+    return true if arr.index(newFrame) == nil && newFrame > @proximityMinimum && newFrame < (@totalFramesOfClip - @proximityMinimum)
     false
   end
 
