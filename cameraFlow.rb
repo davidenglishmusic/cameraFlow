@@ -31,9 +31,15 @@ class CameraFlow
     croppedImage.write "#{filename}"
   end
 
-  def getKeyFramesAndCoordinates()
-    circleCoordinates = CircleCoordinatesGen.new(@numberOfKeyFrames, @limit).generateCoordinates()
-    keyFrames = KeyframeGen.new(@numberOfKeyFrames, @totalFramesOfClip).generateKeyframes()
+  def getCircleCoordinates
+    CircleCoordinatesGen.new(@numberOfKeyFrames, @limit).generateCoordinates()
+  end
+
+  def getkeyFrames
+    KeyframeGen.new(@numberOfKeyFrames, @totalFramesOfClip).generateKeyframes()
+  end
+
+  def getKeyFramesAndCoordinates(circleCoordinates, keyFrames)
     keyFramesandCoordinates = keyFrames.zip(circleCoordinates)
     keyFramesandCoordinates.insert(0, [0, @startingCoordinates])
     keyFramesandCoordinates.push([@totalFramesOfClip, @endingCoordinates])
@@ -52,3 +58,7 @@ class CameraFlow
   end
 
 end
+
+# shake = CameraFlow.new()
+#
+# p shake.getAllFramesAndCoordinates(shake.getKeyFramesAndCoordinates(shake.getCircleCoordinates(), shake.getkeyFrames))
