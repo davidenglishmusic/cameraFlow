@@ -1,9 +1,7 @@
-require 'RMagick'
-include Magick
-
 require_relative 'circleCoordinatesGen.rb'
 require_relative 'keyframeGen.rb'
 require_relative 'positionByFrameGen.rb'
+require_relative 'darkRoom.rb'
 
 class Flow
 
@@ -13,10 +11,6 @@ class Flow
   attr_accessor :enlargement_factor_in_pixels
   attr_accessor :current_image
   attr_accessor :enlargement_factor
-  attr_accessor :image_width
-  attr_accessor :image_height
-  attr_accessor :starting_x_point
-  attr_accessor :starting_y_point
   attr_accessor :total_frames_of_clip
   attr_accessor :number_of_keyframes
   attr_accessor :starting_coordinates
@@ -26,6 +20,20 @@ class Flow
   attr_accessor :extension
   attr_accessor :proximity_minimum
 
+  def initialize(filename, extension, resolution)
+    @filename = filename
+    @extension = extension
+    set_HD_resolution(resolution)
+    @enlargement_factor_in_pixels = 100.0
+    @enlargement_factor = 1 + (@enlargement_factor_in_pixels / @HD_resolution[0])
+    @total_frames_of_clip = 60
+    set_number_of_keyframes(@total_frames_of_clip)
+    @starting_coordinates = [0,0]
+    @ending_coordinates = [0,0]
+    @limit = 5
+    @proximity_minimum = 5
+  end
+
   def set_HD_resolution(value)
     if value == 1080
       @HD_resolution = [1920, 1080]
@@ -34,29 +42,8 @@ class Flow
     end
   end
 
-  def initialize(filename, extension, resolution)
-    @filename = filename
-    @extension = extension
-    @current_image = ImageList.new(@filename + @extension)
-    set_HD_resolution(resolution)
-    @enlargement_factor_in_pixels = 100
-    @enlargement_factor = 1 + (@enlargement_factor_in_pixels / @HD_resolution[0])
-    @image_width = @current_image.columns
-    @image_height = @current_image.rows
-    @starting_x_point = @image_width * (@enlargement_factor_in_pixels / @HD_resolution[0])
-    @starting_y_point = @image_height * (@enlargement_factor_in_pixels / @HD_resolution[1])
-    @total_frames_of_clip = 60
+  def set_number_of_keyframes(total_frames_of_clip)
     @number_of_keyframes = (@total_frames_of_clip * Ten_percent).round
-    @starting_coordinates = [0,0]
-    @ending_coordinates = [0,0]
-    @limit = 5
-    @proximity_minimum = 5
-  end
-
-  def scale_crop(coordinates, filename)
-    zoomed_image = @current_image.scale(@enlargement_factor)
-    cropped_image = zoomed_image.crop(@starting_x_point + coordinates[0], @starting_y_point + coordinates[1], @HD_resolution[0], @HD_resolution[1])
-    cropped_image.write "#{filename}"
   end
 
   def get_circle_coordinates
@@ -83,6 +70,20 @@ class Flow
     end
     arr.compact.flatten.each_slice(3).to_a
     arr
+  end
+
+  def creates_frames(frames_and_coordinates)
+    count = 0
+    frames_and_coordinates.each do |i|
+      create_new_frame(@filename, @extension, i[1], count)
+      count = count + 1
+      p count.to_s + " of " + @total_frames_of_clip.to_s
+    end
+  end
+
+  def create_new_frame(filename, extension, coordinates, count)
+    dark_room = Dark_room.new(@enlargement_factor, @HD_resolution)
+    dark_room.process_image(filename, extension, coordinates, count)
   end
 
 end
