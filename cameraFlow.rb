@@ -13,6 +13,11 @@ class CameraFlow
   end
 
   def startFlow()
+    puts "File selected: " + @filename + @extension
+    puts "Total frames to generate: "
+    puts "Key frames to generate: "
+    puts "Enumerated file to be created: " + @filename + "####" + @extension
+    puts "Resolution Selected: " + @resolution
     flow = Flow.new(@filename, @extension, @resolution)
   end
 

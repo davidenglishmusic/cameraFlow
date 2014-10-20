@@ -51,11 +51,6 @@ class Flow
     @ending_coordinates = [0,0]
     @limit = 5
     @proximity_minimum = 5
-    puts "File selected: " + @filename + @extension
-    puts "Total frames to generate: " + @total_frames_of_clip.to_s
-    puts "Key frames to generate: " + @number_of_keyframes.to_s
-    puts "Enumerated file to be created: " + @filename + "####" + @extension
-    puts "Resolution Selected: " + @HDresolution.to_s
   end
 
   def scale_crop(coordinates, filename)
@@ -65,7 +60,6 @@ class Flow
   end
 
   def get_circle_coordinates
-    p @limit
     CircleCoordinatesGen.new(@number_of_keyframes, @limit).generate_coordinates()
   end
 
@@ -73,7 +67,7 @@ class Flow
     KeyframeGen.new(@number_of_keyframes, @total_frames_of_clip, @proximity_minimum).generate_keyframes()
   end
 
-  def get_keyframes_and_coordinates(circle_coordinates, keyframes)
+  def combine_keyframes_with_their_coordinates(circle_coordinates, keyframes)
     keyframes_and_coordinates = keyframes.zip(circle_coordinates)
     keyframes_and_coordinates.insert(0, [0, @starting_coordinates])
     keyframes_and_coordinates.push([@total_frames_of_clip, @ending_coordinates])
