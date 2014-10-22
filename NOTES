@@ -1,0 +1,3 @@
+AVconv command to convert an .mts to an image sequence contained in the bench folder:
+
+avconv -i field.mts -vsync 1 -r 24 -an -y -qscale 1 bench/%d.bmp
