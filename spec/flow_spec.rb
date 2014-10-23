@@ -5,6 +5,7 @@ describe Flow do
   before :all do
     @test_object_001 = Flow.new("green",".jpg", 1080)
     @test_object_002 = Flow.new("green",".jpg", 1080)
+    @test_object_003 = Flow.new("field",".jpg", 1080)
   end
 
   describe "calculate_absolute_distance" do
@@ -34,18 +35,28 @@ describe Flow do
   #   end
   # end
 
-  # describe "creates_frames" do
-  #   it "creates a series of newly scaled, positioned, and cropped frame" do
-  #     keyframes_and_coordinates = [[0, [0, 0]], [9, [2, -4]], [15, [1, 1]], [20, [-2, 0]], [26, [3, 2]], [35, [3, 3]], [43, [1, 3]], [48, [-4, 1]], [60, [0, 0]]]
-  #     all_frames_and_coordinates = @test_object_001.get_all_frames_and_coordinates(keyframes_and_coordinates)
-  #     @test_object_001.creates_frames(all_frames_and_coordinates)
-  #   end
-  #   it "creates a series of newly scaled, positioned, and cropped frame" do
-  #     @test_object_002.total_frames_of_clip = 300
-  #     @test_object_002.set_number_of_keyframes(300)
-  #     keyframes_and_coordinates = @test_object_002.combine_keyframes_with_their_coordinates(@test_object_002.get_circle_coordinates, @test_object_002.get_keyframes)
-  #     all_frames_and_coordinates = @test_object_002.get_all_frames_and_coordinates(keyframes_and_coordinates)
-  #     @test_object_002.creates_frames(all_frames_and_coordinates)
+  # describe "creates_frames_single" do
+    # it "creates a series of newly scaled, positioned, and cropped frames" do
+    #   keyframes_and_coordinates = [[0, [0, 0]], [9, [2, -4]], [15, [1, 1]], [20, [-2, 0]], [26, [3, 2]], [35, [3, 3]], [43, [1, 3]], [48, [-4, 1]], [60, [0, 0]]]
+    #   all_frames_and_coordinates = @test_object_001.get_all_frames_and_coordinates(keyframes_and_coordinates)
+    #   @test_object_001.creates_frames_from_single(all_frames_and_coordinates)
+    # end
+    # it "creates a series of newly scaled, positioned, and cropped frames" do
+    #   @test_object_002.total_frames_of_clip = 300
+    #   @test_object_002.set_number_of_keyframes(300)
+    #   keyframes_and_coordinates = @test_object_002.combine_keyframes_with_their_coordinates(@test_object_002.get_circle_coordinates, @test_object_002.get_keyframes)
+    #   all_frames_and_coordinates = @test_object_002.get_all_frames_and_coordinates(keyframes_and_coordinates)
+    #   @test_object_002.creates_frames_from_single(all_frames_and_coordinates)
+    # end
+  # end
+
+  # describe "creates_frames_sequence" do
+  #   it "creates a series of newly scaled, positioned and cropped frames" do
+  #     @test_object_003.total_frames_of_clip = 674
+  #     @test_object_002.set_number_of_keyframes(674)
+  #     keyframes_and_coordinates = @test_object_003.combine_keyframes_with_their_coordinates(@test_object_003.get_circle_coordinates, @test_object_003.get_keyframes)
+  #     all_frames_and_coordinates = @test_object_003.get_all_frames_and_coordinates(keyframes_and_coordinates)
+  #     @test_object_003.creates_frames_from_sequence(all_frames_and_coordinates)
   #   end
   # end
 

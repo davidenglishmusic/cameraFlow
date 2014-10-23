@@ -8,8 +8,8 @@ class Dark_room
     @HD_resolution = resolution
   end
 
-  def process_image(filename, extension, coordinates, count)
-    image = ImageList.new(filename + extension)
+  def process_image(file_path, filename, extension, coordinates, count)
+    image = ImageList.new(file_path)
     scaled_image = image.scale(@enlargement_factor)
     scaled_image_width = scaled_image.columns
     scaled_image_height = scaled_image.rows

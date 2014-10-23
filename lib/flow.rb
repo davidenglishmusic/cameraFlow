@@ -72,18 +72,30 @@ class Flow
     arr
   end
 
-  def creates_frames(frames_and_coordinates)
+  def creates_frames_from_single(frames_and_coordinates)
     count = 0
     frames_and_coordinates.each do |i|
-      create_new_frame(@filename, @extension, i[1], count)
+      create_new_frame('bench/'+ @filename + @extension, @filename, @extension, i[1], count)
       count = count + 1
       p count.to_s + " of " + @total_frames_of_clip.to_s
     end
   end
 
-  def create_new_frame(filename, extension, coordinates, count)
+  def create_new_frame(file_path, filename, extension, coordinates, count)
     dark_room = Dark_room.new(@enlargement_factor, @HD_resolution)
-    dark_room.process_image(filename, extension, coordinates, count)
+    dark_room.process_image(file_path, filename, extension, coordinates, count)
+  end
+
+  def creates_frames_from_sequence(frames_and_coordinates)
+    count = 0
+    bench_directory = Dir.entries('bench').sort_by { |a| File.stat('bench/' + a).mtime }
+    bench_directory.each do |item|
+      next if item == '.' or item == '..'
+      create_new_frame("bench/" + item, @filename, @extension, frames_and_coordinates[count][1], count)
+      p frames_and_coordinates[count][1]
+      count = count + 1
+      p count.to_s + " of " + @total_frames_of_clip.to_s
+    end
   end
 
 end
