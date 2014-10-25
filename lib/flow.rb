@@ -30,7 +30,7 @@ class Flow
     set_number_of_keyframes(@total_frames_of_clip)
     @starting_coordinates = [0,0]
     @ending_coordinates = [0,0]
-    @limit = 5
+    @limit = 20
     @proximity_minimum = 5
   end
 
@@ -95,6 +95,9 @@ class Flow
       p frames_and_coordinates[count][1]
       count = count + 1
       p count.to_s + " of " + @total_frames_of_clip.to_s
+      if count % 50 == 0
+         GC.start
+      end
     end
   end
 

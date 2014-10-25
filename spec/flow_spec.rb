@@ -50,14 +50,14 @@ describe Flow do
     # end
   # end
 
-  # describe "creates_frames_sequence" do
-  #   it "creates a series of newly scaled, positioned and cropped frames" do
-  #     @test_object_003.total_frames_of_clip = 674
-  #     @test_object_002.set_number_of_keyframes(674)
-  #     keyframes_and_coordinates = @test_object_003.combine_keyframes_with_their_coordinates(@test_object_003.get_circle_coordinates, @test_object_003.get_keyframes)
-  #     all_frames_and_coordinates = @test_object_003.get_all_frames_and_coordinates(keyframes_and_coordinates)
-  #     @test_object_003.creates_frames_from_sequence(all_frames_and_coordinates)
-  #   end
-  # end
+  describe "creates_frames_sequence" do
+    it "creates a series of newly scaled, positioned and cropped frames" do
+      @test_object_003.total_frames_of_clip = 674
+      @test_object_002.set_number_of_keyframes(674)
+      keyframes_and_coordinates = @test_object_003.combine_keyframes_with_their_coordinates(@test_object_003.get_circle_coordinates, @test_object_003.get_keyframes)
+      all_frames_and_coordinates = @test_object_003.get_all_frames_and_coordinates(keyframes_and_coordinates)
+      @test_object_003.creates_frames_from_sequence(all_frames_and_coordinates)
+    end
+  end
 
 end
