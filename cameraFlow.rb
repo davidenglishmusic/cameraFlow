@@ -22,7 +22,3 @@ class CameraFlow
   end
 
 end
-
-#shake = CameraFlow.new()
-
-#p shake.get_all_frames_and_coordinates(shake.get_keyframes_and_coordinates(shake.get_circle_coordinates(), shake.get_keyframes))
