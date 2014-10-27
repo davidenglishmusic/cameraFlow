@@ -3,9 +3,9 @@ require_relative '../lib/flow'
 describe Flow do
 
   before :all do
-    @test_object_001 = Flow.new("green",".jpg", 1080)
-    @test_object_002 = Flow.new("green",".jpg", 1080)
-    @test_object_003 = Flow.new("field",".jpg", 1080)
+    @test_object_001 = Flow.new("green",".jpg", 1920)
+    @test_object_002 = Flow.new("green",".jpg", 1920)
+    @test_object_003 = Flow.new("field",".jpg", 1920)
   end
 
   describe "calculate_absolute_distance" do

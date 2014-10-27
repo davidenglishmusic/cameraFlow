@@ -35,7 +35,7 @@ class Flow
   end
 
   def set_HD_resolution(value)
-    if value == 1080
+    if value == 1920
       @HD_resolution = [1920, 1080]
     else
       @HD_resolution = [1280, 720]
