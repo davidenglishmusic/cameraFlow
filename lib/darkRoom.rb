@@ -21,8 +21,7 @@ class Dark_room
     starting_y_point = ((image.rows * @enlargement_factor) - image.rows) / TWO + coordinates[1]
     scaled_image = image.scale(@enlargement_factor)
     adjusted_image = get_subpixel_crop(scaled_image, 0 + coordinates[0], 0 + coordinates[1], @HD_width + coordinates[0], @HD_height + coordinates[1])
-    p adjusted_image.inspect
-    adjusted_image.write "output/#{filename + count.to_s + extension}"
+    adjusted_image.write "output/#{filename + count.to_s + '.png'}"
     adjusted_image.destroy!
   end
 

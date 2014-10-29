@@ -114,7 +114,11 @@ class CameraFlow
     flow.set_number_of_keyframes(@frame_total)
     keyframes_and_coordinates = flow.combine_keyframes_with_their_coordinates(flow.get_circle_coordinates, flow.get_keyframes)
     all_frames_and_coordinates = flow.get_all_frames_and_coordinates(keyframes_and_coordinates)
-    flow.creates_frames_from_sequence(all_frames_and_coordinates)
+    if @format == "image"
+      flow.creates_frames_from_single(all_frames_and_coordinates)
+    else
+      flow.creates_frames_from_sequence(all_frames_and_coordinates)
+    end
   end
 
 end
