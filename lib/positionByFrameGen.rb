@@ -25,30 +25,30 @@ class PositionByFrameGen
     @horizontal_half = @horizontal_coordinate_difference / TWO
     @vertical_coordinate_difference = calculate_absolute_distance(@starting_coordinate[1], @ending_coordinate[1])
     @vertical_half = @vertical_coordinate_difference / TWO
-    calculate_midpoint()
+    calculate_midpoint
     @total_number_of_frames = @ending_frame - @starting_frame
-    @direction = determine_direction()
+    @direction = determine_direction
   end
 
   def determine_direction
     if @ending_coordinate[0] == @starting_coordinate[0] && @ending_coordinate[1] == @starting_coordinate[1]
-      "none"
+      'none'
     elsif @ending_coordinate[0] > @starting_coordinate[0] && @ending_coordinate[1] == @starting_coordinate[1]
-      "forward"
+      'forward'
     elsif @ending_coordinate[0] < @starting_coordinate[0] && @ending_coordinate[1] == @starting_coordinate[1]
-      "back"
+      'back'
     elsif @ending_coordinate[0] == @starting_coordinate[0] && @ending_coordinate[1] > @starting_coordinate[1]
-      "up"
+      'up'
     elsif @ending_coordinate[0] == @starting_coordinate[0] && @ending_coordinate[1] < @starting_coordinate[1]
-      "down"
+      'down'
     elsif @ending_coordinate[0] > @starting_coordinate[0] && @ending_coordinate[1] > @starting_coordinate[1]
-      "forwardAndUp"
+      'forwardAndUp'
     elsif @ending_coordinate[0] > @starting_coordinate[0]
-      "forwardAndDown"
+      'forwardAndDown'
     elsif @ending_coordinate[1] > @starting_coordinate[1]
-      "backAndUp"
+      'backAndUp'
     else
-      "backAndDown"
+      'backAndDown'
     end
   end
 
@@ -56,7 +56,7 @@ class PositionByFrameGen
     (ending_coordinate - starting_coordinate).abs
   end
 
-  def calculate_midpoint()
+  def calculate_midpoint
     x_midpoint = 0
     y_midpoint = 0
     if @ending_coordinate[0] > @starting_coordinate[0]
@@ -73,7 +73,6 @@ class PositionByFrameGen
   end
 
   def calculate_y(x)
-    #print_formula(x)
     #Amplitude * Math.sin((2 * Math::PI / frequency) * ( x - horizontal_offset)) + vertical_offset
     @vertical_half * Math.sin((Math::PI / @horizontal_coordinate_difference) * (x - @midpoint[0])) + @midpoint[1]
   end
@@ -82,33 +81,32 @@ class PositionByFrameGen
     p "#{@vertical_half} * sin((pi / #{@horizontal_coordinate_difference}) * (x - #{@midpoint[0]})) + #{@midpoint[1]}"
   end
 
-  def get_all_frame_coordinates()
+  def get_all_frame_coordinates
     arr = []
-    x_increment = (@ending_coordinate[0] - @starting_coordinate[0]).abs.to_f/@total_number_of_frames
-    current_x_coordinate = @starting_coordinate[0]
+    x_increment = (@ending_coordinate[0] - @starting_coordinate[0]).abs.to_f / @total_number_of_frames
     arr.push([@starting_frame, @starting_coordinate])
     case @direction
-    when "none"
+    when 'none'
       arr = no_movement(arr, x_increment)
-    when "forward"
+    when 'forward'
       arr = forward(arr, x_increment)
-    when "back"
+    when 'back'
       arr = back(arr, x_increment)
-    when "up"
+    when 'up'
       @horizontal_coordinate_difference = TEN
       @midpoint[0] = FIVE
       x_increment = 1
       arr = up(arr, x_increment)
-    when "down"
+    when 'down'
       @horizontal_coordinate_difference = TEN
       @midpoint[0] = FIVE
       x_increment = 1
       arr = down(arr, x_increment)
-    when "forwardAndUp"
+    when 'forwardAndUp'
       arr = forward_and_up(arr, x_increment)
-    when "forwardAndDown"
+    when 'forwardAndDown'
       arr = forward_and_down(arr, x_increment)
-    when "backAndUp"
+    when 'backAndUp'
       arr = back_and_up(arr, x_increment)
     else
       arr = back_and_down(arr, x_increment)
@@ -117,63 +115,63 @@ class PositionByFrameGen
   end
 
   def no_movement(initial_arr, x_increment)
-    frame_arr = get_in_between_frames()
+    frame_arr = get_in_between_frames
     x_arr = get_x_coordinates(@starting_coordinate[0], x_increment)
     y_arr = get_y_coordinates(x_arr)
     zip_combine_concat(initial_arr, frame_arr, x_arr, y_arr)
   end
 
   def forward(initial_arr, x_increment)
-    frame_arr = get_in_between_frames()
+    frame_arr = get_in_between_frames
     x_arr = get_x_coordinates(@starting_coordinate[0] + x_increment, x_increment)
     y_arr = get_y_coordinates(x_arr)
     zip_combine_concat(initial_arr, frame_arr, x_arr, y_arr)
   end
 
   def back(initial_arr, x_increment)
-    frame_arr = get_in_between_frames()
+    frame_arr = get_in_between_frames
     x_arr = get_x_coordinates(@starting_coordinate[0] - x_increment, x_increment)
     y_arr = get_y_coordinates(x_arr)
     zip_combine_concat(initial_arr, frame_arr, x_arr, y_arr)
   end
 
   def up(initial_arr, x_increment)
-    frame_arr = get_in_between_frames()
+    frame_arr = get_in_between_frames
     x_arr = get_x_coordinates(0 + x_increment, x_increment)
     y_arr = get_y_coordinates(x_arr)
     zip_combine_concat(initial_arr, frame_arr, x_arr, y_arr)
   end
 
   def down(initial_arr, x_increment)
-    frame_arr = get_in_between_frames()
+    frame_arr = get_in_between_frames
     x_arr = get_x_coordinates(0 + x_increment, x_increment)
     y_arr = get_y_coordinates(x_arr)
     zip_combine_concat(initial_arr, frame_arr, x_arr, y_arr.reverse)
   end
 
   def forward_and_up(initial_arr, x_increment)
-    frame_arr = get_in_between_frames()
+    frame_arr = get_in_between_frames
     x_arr = get_x_coordinates(@starting_coordinate[0] + x_increment, x_increment)
     y_arr = get_y_coordinates(x_arr)
     zip_combine_concat(initial_arr, frame_arr, x_arr, y_arr)
   end
 
   def forward_and_down(initial_arr, x_increment)
-    frame_arr = get_in_between_frames()
+    frame_arr = get_in_between_frames
     x_arr = get_x_coordinates(@starting_coordinate[0] + x_increment, x_increment)
     y_arr = get_y_coordinates(x_arr)
     zip_combine_concat(initial_arr, frame_arr, x_arr, y_arr.reverse)
   end
 
   def back_and_up(initial_arr, x_increment)
-    frame_arr = get_in_between_frames()
+    frame_arr = get_in_between_frames
     x_arr = get_x_coordinates(@starting_coordinate[0] - x_increment, x_increment)
     y_arr = get_y_coordinates(x_arr)
     zip_combine_concat(initial_arr, frame_arr, x_arr, y_arr.reverse)
   end
 
   def back_and_down(initial_arr, x_increment)
-    frame_arr = get_in_between_frames()
+    frame_arr = get_in_between_frames
     x_arr = get_x_coordinates(@starting_coordinate[0] - x_increment, x_increment)
     y_arr = get_y_coordinates(x_arr)
     zip_combine_concat(initial_arr, frame_arr, x_arr, y_arr)
@@ -182,8 +180,8 @@ class PositionByFrameGen
   def zip_combine_concat(initial_arr, frame_arr, x_arr, y_arr)
     coordinate_arr = x_arr.zip(y_arr)
     combined_arr = frame_arr.zip(coordinate_arr)
-    if @direction == "down" || @direction == "up"
-      initial_arr.concat(combined_arr).each{ |x| x[1][0] = @starting_coordinate[0] }
+    if @direction == 'down' || @direction == 'up'
+      initial_arr.concat(combined_arr).each { |x| x[1][0] = @starting_coordinate[0] }
     else
       initial_arr.concat(combined_arr)
     end
@@ -191,8 +189,8 @@ class PositionByFrameGen
 
   def get_y_coordinates(x_arr)
     y_arr = []
-    if @direction == "none" || @direction == "forward" || @direction == "back"
-      x_arr.each do |x|
+    if @direction == 'none' || @direction == 'forward' || @direction == 'back'
+      x_arr.each do
         y_arr.push(@starting_coordinate[1])
       end
     else
@@ -205,11 +203,11 @@ class PositionByFrameGen
 
   def get_x_coordinates(current_x_coordinate, x_increment)
     x_arr = []
-    if @direction == "none"
+    if @direction == 'none'
       ((@starting_frame + 1)..(@ending_frame - 1)).each do
         x_arr.push(current_x_coordinate)
       end
-    elsif @direction == "up" || @direction == "down" || @direction.include?("forward")
+    elsif @direction == 'up' || @direction == 'down' || @direction.include?('forward')
       ((@starting_frame + 1)..(@ending_frame - 1)).each do
         x_arr.push(current_x_coordinate)
         current_x_coordinate += x_increment
@@ -223,9 +221,9 @@ class PositionByFrameGen
     x_arr
   end
 
-  def get_in_between_frames()
+  def get_in_between_frames
     frame_arr = []
-    ((@starting_frame + 1)..(@ending_frame - 1)).each {|frame| frame_arr.push(frame) }
+    ((@starting_frame + 1)..(@ending_frame - 1)).each { |frame| frame_arr.push(frame) }
     frame_arr
   end
 end
