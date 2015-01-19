@@ -13,74 +13,88 @@ class CameraFlow
   attr_accessor :format
   attr_accessor :resolution
   attr_accessor :frame_total
+  attr_accessor :error_message
 
-  IMAGE_FORMATS = [".jpg", ".jpeg", ".gif", ".bmp", ".tif", ".png"]
-  VIDEO_FORMATS = [".mov", ".mts", ".mp4", ".avi"]
+  IMAGE_FORMATS = ['.jpg', '.jpeg', '.gif', '.bmp', '.tif', '.png']
+  VIDEO_FORMATS = ['.mov', '.mts', '.mp4', '.avi']
   HELP_COMMAND =  'Please enter "ruby cameraFlow.rb h" for instructions.'
 
-  def initialize()
-    @command = ARGV[0]
-    validate_command
-    @path = ARGV[1]
-    validate_file_exists
-    get_filename_and_extension(@path)
-    validate_extension
+  def initialize(command, path)
+    @command = command
+    @path = path
   end
 
-  def validate_command
-    if @command == "c"
-      return
-    elsif @command == "h"
-      puts print_help_information
-      exit
-    else
-      puts 'An invalid command has been entered.'
+  def run_validations
+    if !valid_command?
+      puts 'An invalid command has been entered. ' << HELP_COMMAND
       exit
     end
-  end
-
-  def print_help_information
-    puts ""
-    puts "cameraFlow will accept the following file formats"
-    print "Images: "
-    IMAGE_FORMATS.each { |format | print format + " " }
-    puts ""
-    print "Videos: "
-    VIDEO_FORMATS.each { |format | print format + " " }
-    puts ""
-    puts ""
-    puts "Here are two sample commands: "
-    puts "ruby cameraFlow.rb field.mov"
-    puts "ruby cameraFlow.rb ~/Desktop/forest.png 300"
-    puts "*If entering an image as opposed to a video, be sure to add the length in frames"
-  end
-
-  def get_filename_and_extension(path)
-    filename_with_extension = File.split(path)[-1]
-    @filename = /^\w+/.match(filename_with_extension).to_s
-    @extension = /\.(.+)/.match(filename_with_extension).to_s
-  end
-
-  def validate_file_exists
+    if need_help?
+      puts help_information
+      exit
+    end
     if File.exist? @path
-      true
+      puts "found"
     else
-      puts "File cannot be located - perhaps the path is incorrect."
-      puts HELP_COMMAND
+      puts "?"
+    end
+    if !File.exists? @path
+      puts "File cannot be located - perhaps the path is incorrect. " << HELP_COMMAND
       exit
     end
-  end
-
-  def validate_extension
-    if IMAGE_FORMATS.include? @extension
-      @format = "image"
-    elsif VIDEO_FORMATS.include? @extension
-      @format = "video"
-    else
+    get_filename_and_extension
+    if !valid_extension?
       puts "The file has an extension that is not currently accepted."
       puts HELP_COMMAND
       exit
     end
+  end
+
+  def valid_command?
+    if @command == 'c' or @command == 'h'
+      true
+    else
+      false
+    end
+  end
+
+  def need_help?
+    if @command == 'h'
+      true
+    else
+      false
+    end
+  end
+
+  def valid_extension?
+    if IMAGE_FORMATS.include? @extension
+      @format = "image"
+      true
+    elsif VIDEO_FORMATS.include? @extension
+      @format = "video"
+      true
+    else
+      false
+    end
+  end
+
+  def help_information
+    return "
+      cameraFlow will accept the following file formats:
+      Images:
+      #{IMAGE_FORMATS.each { |format | format + ' ' }}
+      Videos:
+      #{VIDEO_FORMATS.each { |format | format + ' ' }}
+      Here are two sample commands:
+      ruby cameraFlow.rb field.mov
+      ruby cameraFlow.rb ~/Desktop/forest.png 300
+      *If entering an image as opposed to a video, be sure to add the length in frames"
+  end
+
+  def get_filename_and_extension
+    filename_with_extension = File.split(@path)[-1]
+    @filename = /^\w+/.match(filename_with_extension).to_s
+    @extension = /\.(.+)/.match(filename_with_extension).to_s
   end
 
   def set_frame_total
@@ -92,6 +106,7 @@ class CameraFlow
   end
 
   def prepare_bench
+    FileUtils.mkdir 'bench'
     if @format == "image"
       FileUtils.cp "#{@path}", "bench/#{@filename}#{@extension}"
     else
@@ -125,14 +140,16 @@ end
 
 # Command Sequence
 
-cameraFlow = CameraFlow.new
-
-cameraFlow.prepare_bench
-
-cameraFlow.set_resolution
-
-cameraFlow.set_frame_total
-
-cameraFlow.start_flow
-
-cameraFlow.tear_down_bench
+# cameraFlow = CameraFlow.new(ARGV[0], ARGV[1])
+#
+# cameraFlow.run_validations
+#
+# cameraFlow.prepare_bench
+#
+# cameraFlow.set_resolution
+#
+# cameraFlow.set_frame_total
+#
+# cameraFlow.start_flow
+#
+# cameraFlow.tear_down_bench
