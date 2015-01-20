@@ -106,9 +106,10 @@ class CameraFlow
   end
 
   def prepare_bench
-    if !File.directory? 'bench'
-      FileUtils.mkdir 'bench'
+    if File.directory? 'bench'
+      tear_down_bench
     end
+    FileUtils.mkdir 'bench'
     if @format == "image"
       FileUtils.cp "#{@path}", "bench/#{@filename}#{@extension}"
     else
@@ -118,6 +119,7 @@ class CameraFlow
 
   def tear_down_bench
     FileUtils.rm_r Dir.glob('bench/*')
+    FileUtils.rmdir 'bench'
   end
 
   def set_resolution
@@ -142,16 +144,16 @@ end
 
 # Command Sequence
 #
-# cameraFlow = CameraFlow.new(ARGV[0], ARGV[1])
-#
-# cameraFlow.run_validations
-#
-# cameraFlow.prepare_bench
-#
-# cameraFlow.set_resolution
-#
-# cameraFlow.set_frame_total
-#
-# cameraFlow.start_flow
-#
-# cameraFlow.tear_down_bench
+cameraFlow = CameraFlow.new(ARGV[0], ARGV[1])
+
+cameraFlow.run_validations
+
+cameraFlow.prepare_bench
+
+cameraFlow.set_resolution
+
+cameraFlow.set_frame_total
+
+cameraFlow.start_flow
+
+cameraFlow.tear_down_bench
