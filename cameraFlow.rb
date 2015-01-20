@@ -106,7 +106,9 @@ class CameraFlow
   end
 
   def prepare_bench
-    FileUtils.mkdir 'bench'
+    if !File.directory? 'bench'
+      FileUtils.mkdir 'bench'
+    end
     if @format == "image"
       FileUtils.cp "#{@path}", "bench/#{@filename}#{@extension}"
     else
@@ -139,7 +141,7 @@ class CameraFlow
 end
 
 # Command Sequence
-
+#
 # cameraFlow = CameraFlow.new(ARGV[0], ARGV[1])
 #
 # cameraFlow.run_validations
