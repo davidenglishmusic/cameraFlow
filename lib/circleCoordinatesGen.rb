@@ -11,7 +11,7 @@ class CircleCoordinatesGen
 
   def generate_coordinates
     arr = []
-    (0..@number_of_coordinates_to_generate - 1).each do
+    (0..@number_of_coordinates_to_generate).each do
       arr.push(create_valid_coordinates)
     end
     arr

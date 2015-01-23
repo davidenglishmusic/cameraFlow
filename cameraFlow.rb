@@ -143,7 +143,7 @@ class CameraFlow
 end
 
 # Command Sequence
-#
+
 cameraFlow = CameraFlow.new(ARGV[0], ARGV[1])
 
 cameraFlow.run_validations
@@ -156,4 +156,8 @@ cameraFlow.set_frame_total
 
 cameraFlow.start_flow
 
+puts "Flow complete"
+puts "Tearing down the bench"
 cameraFlow.tear_down_bench
+
+puts "Please check the output folder"
