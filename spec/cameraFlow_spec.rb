@@ -53,11 +53,11 @@ describe CameraFlow do
 
   describe 'valid_extension?' do
     it 'returns true if the extension is valid' do
-      @test_object_001.get_filename_and_extension
+      @test_object_001.parse_filename_and_extension
       expect(@test_object_001.valid_extension?).to eq(true)
     end
     it 'returns false if the extension is not' do
-      @test_object_004.get_filename_and_extension
+      @test_object_004.parse_filename_and_extension
       expect(@test_object_004.valid_extension?).to eq(false)
     end
   end

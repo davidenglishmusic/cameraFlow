@@ -5,7 +5,6 @@ include Magick
 require_relative 'lib/flow.rb'
 
 class CameraFlow
-
   attr_accessor :command
   attr_accessor :path
   attr_accessor :filename
@@ -34,24 +33,24 @@ class CameraFlow
       exit
     end
     if File.exist? @path
-      puts "found"
+      puts 'found'
     else
-      puts "?"
+      puts '?'
     end
-    if !File.exists? @path
-      puts "File cannot be located - perhaps the path is incorrect. " << HELP_COMMAND
+    if !File.exist? @path
+      puts 'File cannot be located - perhaps the path is incorrect. ' << HELP_COMMAND
       exit
     end
-    get_filename_and_extension
+    parse_filename_and_extension
     if !valid_extension?
-      puts "The file has an extension that is not currently accepted."
+      puts 'The file has an extension that is not currently accepted.'
       puts HELP_COMMAND
       exit
     end
   end
 
   def valid_command?
-    if @command == 'c' or @command == 'h'
+    if @command == 'c' || @command == 'h'
       true
     else
       false
@@ -68,10 +67,10 @@ class CameraFlow
 
   def valid_extension?
     if IMAGE_FORMATS.include? @extension
-      @format = "image"
+      @format = 'image'
       true
     elsif VIDEO_FORMATS.include? @extension
-      @format = "video"
+      @format = 'video'
       true
     else
       false
@@ -79,7 +78,7 @@ class CameraFlow
   end
 
   def help_information
-    return "
+    "
       cameraFlow will accept the following file formats:
       Images:
       #{IMAGE_FORMATS.each { |format | format + ' ' }}
@@ -91,26 +90,24 @@ class CameraFlow
       *If entering an image as opposed to a video, be sure to add the length in frames"
   end
 
-  def get_filename_and_extension
+  def parse_filename_and_extension
     filename_with_extension = File.split(@path)[-1]
     @filename = /^\w+/.match(filename_with_extension).to_s
     @extension = /\.(.+)/.match(filename_with_extension).to_s
   end
 
   def set_frame_total
-    if @format == "image" && ARGV[2].to_i.class == Fixnum && ARGV[2].to_i > 0
+    if @format == 'image' && ARGV[2].to_i.class == Fixnum && ARGV[2].to_i > 0
       @frame_total = ARGV[2].to_i.round
     else
-      @frame_total = Dir.entries("bench").size - 2
+      @frame_total = Dir.entries('bench').size - 2
     end
   end
 
   def prepare_bench
-    if File.directory? 'bench'
-      tear_down_bench
-    end
+    tear_down_bench if File.directory? 'bench'
     FileUtils.mkdir 'bench'
-    if @format == "image"
+    if @format == 'image'
       FileUtils.cp "#{@path}", "bench/#{@filename}#{@extension}"
     else
       `avconv -i #{@path} -vsync 1 -r 24 -an -y -qscale 1 bench/%d.png`
@@ -133,7 +130,7 @@ class CameraFlow
     flow.set_number_of_keyframes(@frame_total)
     keyframes_and_coordinates = flow.combine_keyframes_with_their_coordinates(flow.get_circle_coordinates, flow.get_keyframes)
     all_frames_and_coordinates = flow.get_all_frames_and_coordinates(keyframes_and_coordinates)
-    if @format == "image"
+    if @format == 'image'
       flow.creates_frames_from_single(all_frames_and_coordinates)
     else
       flow.creates_frames_from_sequence(all_frames_and_coordinates)
@@ -144,20 +141,20 @@ end
 
 # Command Sequence
 
-cameraFlow = CameraFlow.new(ARGV[0], ARGV[1])
+camera_flow = CameraFlow.new(ARGV[0], ARGV[1])
 
-cameraFlow.run_validations
+camera_flow.run_validations
 
-cameraFlow.prepare_bench
+camera_flow.prepare_bench
 
-cameraFlow.set_resolution
+camera_flow.set_resolution
 
-cameraFlow.set_frame_total
+camera_flow.set_frame_total
 
-cameraFlow.start_flow
+camera_flow.start_flow
 
-puts "Flow complete"
-puts "Tearing down the bench"
-cameraFlow.tear_down_bench
+puts 'Flow complete'
+puts 'Tearing down the bench'
+camera_flow.tear_down_bench
 
-puts "Please check the output folder"
+puts 'Please check the output folder'
