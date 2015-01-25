@@ -1,4 +1,4 @@
-require_relative '../cameraFlow'
+require_relative '../lib/cameraFlow'
 
 describe CameraFlow do
 
@@ -18,8 +18,8 @@ describe CameraFlow do
       Videos:
       [".mov", ".mts", ".mp4", ".avi"]
       Here are two sample commands:
-      ruby cameraFlow.rb field.mov
-      ruby cameraFlow.rb ~/Desktop/forest.png 300
+      ruby app.rb field.mov
+      ruby app.rb ~/Desktop/forest.png 300
       *If entering an image as opposed to a video, be sure to add the length in frames')
     end
   end
