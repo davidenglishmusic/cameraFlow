@@ -4,6 +4,9 @@ include Magick
 class Dark_room
 
   TWO = 2
+  POINT_FIVE = 0.5
+  SCALE_X = 1.0
+  SCALE_Y = 1.0
 
   attr_accessor :enlargement_factor
   attr_accessor :HD_width
@@ -28,13 +31,15 @@ class Dark_room
   def get_subpixel_crop(image, left, top, right, bottom)
     final_width = @HD_width
     final_height = @HD_height
-    distance_to_centre_x = 0.5 * (left.abs + right.abs)
-    distance_to_centre_y = 0.5 * (top.abs + bottom.abs)
-    scale_x = 1.0
-    scale_y = 1.0
-    image.distort( Magick::ScaleRotateTranslateDistortion, [distance_to_centre_x, distance_to_centre_y, scale_x, scale_y, 0.0, 0.5 * final_width, 0.5 * final_height] ) do |i|
+    distance_to_centre_x = distance_to_centre(left, right)
+    distance_to_centre_y = distance_to_centre(top, bottom)
+    image.distort( Magick::ScaleRotateTranslateDistortion, [distance_to_centre_x, distance_to_centre_y, SCALE_X, SCALE_Y, 0.0, POINT_FIVE * final_width, POINT_FIVE * final_height] ) do |i|
       i.define("distort:viewport", "#{final_width}x#{final_height}+0+0")
     end
+  end
+
+  def distance_to_centre(sideA, sideB)
+    POINT_FIVE * (sideA.abs + sideB.abs)
   end
 
 end
