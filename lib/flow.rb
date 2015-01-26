@@ -82,7 +82,7 @@ class Flow
   end
 
   def create_new_frame(file_path, filename, extension, coordinates, count)
-    dark_room = Dark_room.new(@enlargement_factor, @HD_resolution)
+    dark_room = DarkRoom.new(@enlargement_factor, @HD_resolution)
     dark_room.process_image(file_path, filename, extension, coordinates, count)
   end
 

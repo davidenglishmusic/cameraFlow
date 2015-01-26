@@ -1,7 +1,7 @@
 require 'RMagick'
 include Magick
 
-class Dark_room
+class DarkRoom
 
   TWO = 2
   POINT_FIVE = 0.5
