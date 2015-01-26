@@ -2,7 +2,6 @@ require 'RMagick'
 include Magick
 
 class DarkRoom
-
   TWO = 2
   POINT_FIVE = 0.5
   SCALE_X = 1.0
@@ -20,8 +19,6 @@ class DarkRoom
 
   def process_image(file_path, filename, extension, coordinates, count)
     image = ImageList.new(file_path)
-    starting_x_point = ((image.columns * @enlargement_factor) - image.columns) / TWO + coordinates[0]
-    starting_y_point = ((image.rows * @enlargement_factor) - image.rows) / TWO + coordinates[1]
     scaled_image = image.scale(@enlargement_factor)
     adjusted_image = get_subpixel_crop(scaled_image, 0 + coordinates[0], 0 + coordinates[1], @HD_width + coordinates[0], @HD_height + coordinates[1])
     adjusted_image.write "output/#{filename + count.to_s + '.png'}"
@@ -33,13 +30,12 @@ class DarkRoom
     final_height = @HD_height
     distance_to_centre_x = distance_to_centre(left, right)
     distance_to_centre_y = distance_to_centre(top, bottom)
-    image.distort( Magick::ScaleRotateTranslateDistortion, [distance_to_centre_x, distance_to_centre_y, SCALE_X, SCALE_Y, 0.0, POINT_FIVE * final_width, POINT_FIVE * final_height] ) do |i|
-      i.define("distort:viewport", "#{final_width}x#{final_height}+0+0")
+    image.distort(Magick::ScaleRotateTranslateDistortion, [distance_to_centre_x, distance_to_centre_y, SCALE_X, SCALE_Y, 0.0, POINT_FIVE * final_width, POINT_FIVE * final_height]) do |i|
+      i.define('distort:viewport', "#{final_width}x#{final_height}+0+0")
     end
   end
 
   def distance_to_centre(sideA, sideB)
     POINT_FIVE * (sideA.abs + sideB.abs)
   end
-
 end
