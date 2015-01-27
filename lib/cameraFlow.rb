@@ -104,20 +104,12 @@ class CameraFlow
     end
   end
 
-  def prepare_bench
-    tear_down_bench if File.directory? 'bench'
-    FileUtils.mkdir 'bench'
-    p "bench directory created"
+  def add_source_to_bench
     if @format == 'image'
       FileUtils.cp "#{@path}", "bench/#{@filename}#{@extension}"
     else
       `avconv -i #{@path} -vsync 1 -r 24 -an -y -qscale 1 bench/%d.png`
     end
-  end
-
-  def tear_down_bench
-    FileUtils.rm_r Dir.glob('bench/*')
-    FileUtils.rmdir 'bench'
   end
 
   def set_resolution
