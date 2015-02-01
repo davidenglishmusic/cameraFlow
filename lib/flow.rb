@@ -95,9 +95,7 @@ class Flow
       p frames_and_coordinates[count][1]
       count = count + 1
       p count.to_s + " of " + @total_frames_of_clip.to_s
-      if count % 50 == 0
-         GC.start
-      end
+      GC.start if count % 50 == 0
     end
   end
 

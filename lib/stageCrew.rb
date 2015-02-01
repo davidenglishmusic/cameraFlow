@@ -1,5 +1,8 @@
 require 'fileutils'
 
+NON_EMPTY_FOLDER_WARNING = 'The output folder is not empty.\n
+  All files will be removed. Enter y to clear the directory or n to stop and exit:'
+
 class StageCrew
   def prepare_bench
     tear_down_bench if File.directory? 'bench'
@@ -21,14 +24,13 @@ class StageCrew
         exit
       end
     else
-      p "creating output dir"
+      puts 'creating output dir'
       FileUtils.mkdir 'output'
     end
   end
 
   def can_clear_directory
-    puts 'The output folder is not empty.'
-    puts 'All files will be removed. Enter y to clear the directory or n to stop and exit:'
+    puts NON_EMPTY_FOLDER_WARNING
     answered_properly = false
     while answered_properly == false
       response = $stdin.gets.chomp!
