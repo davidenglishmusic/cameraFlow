@@ -21,7 +21,6 @@ class DarkRoom
     image = ImageList.new(file_path)
     scaled_image = image.scale(@enlargement_factor)
     distortion_settings = create_distortion_settings(0 + coordinates[0], 0 + coordinates[1], @HD_width + coordinates[0], @HD_height + coordinates[1])
-    p distortion_settings
     adjusted_image = distort_image(scaled_image, distortion_settings[:distance_to_centre_x], distortion_settings[:distance_to_centre_y], distortion_settings[:final_width], distortion_settings[:final_height])
     adjusted_image.write "output/#{filename + count.to_s + '.png'}"
     adjusted_image.destroy!

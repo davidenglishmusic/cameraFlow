@@ -5,7 +5,8 @@ require_relative 'darkRoom.rb'
 
 class Flow
 
-  Ten_percent = 0.1
+  FIVE_PERCENT = 0.05
+  PROXIMITY_MINIMUM = 10
 
   attr_accessor :HD_resolution
   attr_accessor :enlargement_factor_in_pixels
@@ -31,7 +32,7 @@ class Flow
     @starting_coordinates = [0,0]
     @ending_coordinates = [0,0]
     @limit = 20
-    @proximity_minimum = 5
+    @proximity_minimum = PROXIMITY_MINIMUM
   end
 
   def set_HD_resolution(value)
@@ -43,7 +44,7 @@ class Flow
   end
 
   def set_number_of_keyframes(total_frames_of_clip)
-    @number_of_keyframes = (@total_frames_of_clip * Ten_percent).round
+    @number_of_keyframes = (@total_frames_of_clip * FIVE_PERCENT).round
   end
 
   def get_circle_coordinates
