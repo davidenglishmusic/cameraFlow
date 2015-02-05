@@ -14,18 +14,17 @@ class StageCrew
     FileUtils.rmdir 'bench'
   end
 
-  def prepare_output
-    if File.directory? 'output'
-      if Dir.entries('output').size > 0 && can_clear_directory
-        FileUtils.rm_r Dir.glob('output')
-        FileUtils.mkdir 'output'
+  def prepare_directory(directory_name)
+    if File.directory? directory_name
+      if Dir.entries(directory_name).size > 0 && can_clear_directory
+        FileUtils.rm_r Dir.glob(directory_name)
+        FileUtils.mkdir directory_name
       else
         puts 'Exiting'
         exit
       end
     else
-      puts 'creating output dir'
-      FileUtils.mkdir 'output'
+      FileUtils.mkdir directory_name
     end
   end
 

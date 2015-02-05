@@ -1,6 +1,9 @@
 require_relative 'lib/cameraFlow'
 require_relative 'lib/stageCrew'
 
+OUTPUT_DIRECTORY = 'output'
+LOGS_DIRECTORY = 'logs'
+
 # Command Sequence
 
 camera_flow = CameraFlow.new(ARGV[0], ARGV[1])
@@ -10,7 +13,9 @@ camera_flow.run_validations
 
 stage_crew.prepare_bench
 
-stage_crew.prepare_output
+stage_crew.prepare_directory(OUTPUT_DIRECTORY)
+
+stage_crew.prepare_directory(LOGS_DIRECTORY)
 
 camera_flow.add_source_to_bench
 
@@ -22,4 +27,4 @@ camera_flow.start_flow
 
 stage_crew.tear_down_bench
 
-puts 'Please check the output folder'
+puts "Please check the #{OUTPUT_DIRECTORY} folder"
